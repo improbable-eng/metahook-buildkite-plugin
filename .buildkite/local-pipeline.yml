@@ -1,0 +1,9 @@
+steps:
+  - label: "Test"
+    command: echo "Hello World"
+    plugins:
+      - ./.buildkite/plugins/metahook:
+          pre-command: echo  "pre-command hook"
+          command: echo "command hook"
+          post-command: echo "post-command hook"
+          pre-exit: echo  "pre-exit hook"

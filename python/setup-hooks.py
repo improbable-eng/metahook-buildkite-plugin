@@ -17,18 +17,21 @@ hooks = [
 
 def cleanup_metahooks():
     """Remove the temporary hooks"""
-    hooks = [os.path.join(HOOKDIR, hook) for hook in os.listdir(HOOKDIR)]
+    hooks = [os.path.join(HOOKDIR, hook) for hook in os.listdir(HOOKDIR) if hook != 'environment']
     for hook in hooks:
-        if hook == 'environment.sh':
-            continue # skip the geniuine plugin hook
         os.remove(hook)
 
 def create_metahooks():
-    with open(os.path.join(HOOKDIR, 'pre-checkout.sh'), 'w') as outfile:
-        outfile.write("ls")
+    for hook in hooks:
+        content = os.environ.get("BUILDKITE_PLUGIN_METAHOOK_%s" % hook.replace('-', '_').upper())
+        if not content:
+            continue
+        with open(os.path.join(HOOKDIR, hook), 'w') as outfile:
+            outfile.write(content)
 
 
 def main():
+    cleanup_metahooks()
     create_metahooks()
 
 if __name__ == "__main__":

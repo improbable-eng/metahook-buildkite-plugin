@@ -18,6 +18,5 @@ steps:
 
   - label: "Test"
     command: "scripts/test.sh"
-    <<: *common
-  
+    <<: *common  
 ```
