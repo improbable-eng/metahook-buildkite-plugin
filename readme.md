@@ -9,7 +9,11 @@ common: &common
   plugins:
   - ca-johnson/metahook:
       post-checkout: scripts/setup.sh
-      pre-exit: scripts/cleanup.sh
+      post-checkout.bat: scripts/windows-setup.bat
+      pre-exit: |
+        scripts/cleanup.sh
+        echo "Step finished!"
+        scripts/notify.sh
 
 steps:
   - label: "Build"

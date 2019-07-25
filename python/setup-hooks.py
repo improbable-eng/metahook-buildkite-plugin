@@ -15,6 +15,8 @@ hooks = [
     "pre-exit",
 ]
 
+hooks += ['%s.bat' % hook for hook in hooks]
+
 def cleanup_metahooks():
     """Remove the temporary hooks"""
     hooks = [os.path.join(HOOKDIR, hook) for hook in os.listdir(HOOKDIR) if hook != 'environment']
