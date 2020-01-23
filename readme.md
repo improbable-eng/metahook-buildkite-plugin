@@ -7,7 +7,7 @@ A Buildkite plugin that allows running additional commands as buildkite hooks on
 ```yaml
 common: &common
   plugins:
-  - ca-johnson/metahook:
+  - improbable-eng/metahook:
       post-checkout: scripts/setup.sh
       post-checkout.bat: scripts/windows-setup.bat
       pre-exit: |
