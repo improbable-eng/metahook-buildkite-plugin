@@ -17,8 +17,6 @@ declare -a extensions=(
     ".bat"
     ".cmd"
 )
-echo "whereami $(pwd)"
-pwd
 hooks_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 echo "hooks_dir: ${hooks_dir}"
 env | sort | grep METAHOOK
