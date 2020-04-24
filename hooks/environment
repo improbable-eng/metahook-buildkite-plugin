@@ -1,2 +1,35 @@
-#!/bin/bash
-python "${BASH_SOURCE%/*}/../python/setup-hooks.py"
+#!/usr/bin/env bash
+
+declare -a hooks=(
+    # "environment" # not allowed
+    "pre-checkout"
+    "checkout"
+    "post-checkout"
+    "pre-command"
+    "command"
+    "post-command"
+    "pre-artifact"
+    "post-artifact"
+    "pre-exit"
+)
+declare -a extensions=(
+    ""
+    ".bat"
+    ".cmd"
+)
+echo "whereami $(pwd)"
+pwd
+hooks_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+echo "hooks_dir: ${hooks_dir}"
+env | sort | grep METAHOOK
+for hook_name in "${hooks[@]}"; do
+  for ext in "${extensions[@]}"; do
+    hook_file="${hooks_dir}/${hook_name}${ext}"
+    rm -f "${hook_file}"
+    upperd="$(echo "${hook_name}${ext}" | tr "[:lower:]" "[:upper:]")"
+    bkv="BUILDKITE_PLUGIN_METAHOOK_${upperd//-/_}"
+    if [[ -n "${!bkv:-}" ]]; then
+      echo "${!bkv}" >"${hook_file}"
+    fi
+  done
+done
