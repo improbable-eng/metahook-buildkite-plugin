@@ -18,7 +18,8 @@ declare -a extensions=(
     ".cmd"
 )
 hooks_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
-env | sort | grep "METAHOOK"
+vars="$(mktemp)"
+env | sort | grep "METAHOOK" | uniq >"${vars}"
 for hook_name in "${hooks[@]}"; do
   for ext in "${extensions[@]}"; do
     hook_file="${hooks_dir}/${hook_name}${ext}"
@@ -26,7 +27,7 @@ for hook_name in "${hooks[@]}"; do
     upperd="$(echo "${hook_name}${ext}" | tr "[:lower:]" "[:upper:]")"
     bkv="BUILDKITE_PLUGIN_METAHOOK_${upperd//-/_}"
     echo "bkv: ${bkv}"
-    if [[ -n "${!bkv:-}" ]]; then
+    if grep "${bkv}" <"${vars}"; then
       echo "${!bkv}" >"${hook_file}"
     fi
   done
