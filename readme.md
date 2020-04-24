@@ -2,7 +2,7 @@
 
 A Buildkite plugin that allows running additional commands as buildkite hooks on a per-step basis.
 
-# Example
+## Example
 
 ```yaml
 common: &common
@@ -22,5 +22,9 @@ steps:
 
   - label: "Test"
     command: "scripts/test.sh"
-    <<: *common  
+    <<: *common
 ```
+
+## Contributing
+
+See <contributing.md>.
