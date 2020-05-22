@@ -27,4 +27,4 @@ steps:
 
 ## Contributing
 
-See <contributing.md>.
+See [contributing](contributing.md)
