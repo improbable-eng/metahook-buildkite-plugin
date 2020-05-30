@@ -7,7 +7,7 @@ steps:
             echo "pre-command hook"
             echo "with two commands"
           post-command: echo "post-command hook"
-          pre-exit: echo  "pre-exit hook"
+          pre-exit: echo "pre-exit hook"
 
   - label: "Like we did last summer"
     command: echo "Hello Plague World"
@@ -17,4 +17,4 @@ steps:
             echo "plague hook"
             echo "with two commands"
           post-command: echo "post-command summer hook"
-          pre-exit: echo  "pre-exit summer hook"
+          pre-exit: echo "pre-exit summer hook"

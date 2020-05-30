@@ -11,6 +11,6 @@ run_hook_when_needed() {
     hook_file="${BUILDKITE_METAHOOK_HOOKS_PATH}/${hook_name}"
     echo "${!var_name}" >"${hook_file}"
     chmod +x "${hook_file}"
-    source "${hook_file}"
+    "${hook_file}"
   fi
 }
