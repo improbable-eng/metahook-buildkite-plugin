@@ -6,7 +6,15 @@ steps:
           pre-command: |
             echo "pre-command hook"
             echo "with two commands"
-          command.bat: echo "command hook .bat"
           post-command: echo "post-command hook"
-          pre-artifact.cmd: echo "pre-artifact hook .cmd"
-          pre-exit: echo  "pre-exit hook"
+          pre-exit: echo "pre-exit hook"
+
+  - label: "Like we did last summer"
+    command: echo "Hello Plague World"
+    plugins:
+      - ./.buildkite/plugins/metahook:
+          pre-command: |
+            echo "plague hook"
+            echo "with two commands"
+          post-command: echo "post-command summer hook"
+          pre-exit: echo "pre-exit summer hook"

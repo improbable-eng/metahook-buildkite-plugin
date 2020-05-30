@@ -1,46 +1,10 @@
 #!/usr/bin/env bash
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/stdlib.bash" || exit 67
 
-# The list of possible hooks to implement.
-declare -a hooks=(
-    # "environment" # not allowed
-    "pre-checkout"
-    "checkout"
-    "post-checkout"
-    "pre-command"
-    "command"
-    "post-command"
-    "pre-artifact"
-    "post-artifact"
-    "pre-exit"
-)
+BUILDKITE_METAHOOK_HOOKS_PATH="$(mktemp -d)"
+export BUILDKITE_METAHOOK_HOOKS_PATH
+BUILDKITE_METAHOOK_VARS="${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"
+export BUILDKITE_METAHOOK_VARS
+env | sort | grep "METAHOOK" | uniq >"${BUILDKITE_METAHOOK_VARS}"
 
-# The list of possible file extensions for hooks.
-declare -a extensions=(
-    ""
-    ".bat"
-    ".cmd"
-)
-
-hooks_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-vars="$(mktemp)"
-cleanup() {
-  rm -rf "${vars}"
-}
-trap cleanup EXIT
-
-env | sort | grep "METAHOOK" | uniq >"${vars}"
-
-for hook_name in "${hooks[@]}"; do
-  for ext in "${extensions[@]}"; do
-    hook_file="${hooks_dir}/${hook_name}${ext}"
-    rm -f "${hook_file}"
-    upperd="$(echo "${hook_name}${ext}" | tr "[:lower:]" "[:upper:]")"
-    var_name="BUILDKITE_PLUGIN_METAHOOK_${upperd//-/_}"
-    if grep "${var_name}" <"${vars}"; then
-      # Note: ! syntax here is dynamic variable expansion. That is
-      # use the var_name string's variable value.
-      echo "${!var_name}" >"${hook_file}"
-    fi
-  done
-done
+run_hook_when_needed "$(basename "${BASH_SOURCE[0]}")"
