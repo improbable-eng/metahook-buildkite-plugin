@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
-source "$(dirname "${BASH_SOURCE[0]}")/../lib/stdlib.bash" || exit 67
+set -euo pipefail
 
 BUILDKITE_METAHOOK_HOOKS_PATH="$(mktemp -d)"
 export BUILDKITE_METAHOOK_HOOKS_PATH
-BUILDKITE_METAHOOK_VARS="${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"
-export BUILDKITE_METAHOOK_VARS
-env | sort | grep "METAHOOK" | uniq >"${BUILDKITE_METAHOOK_VARS}"
+env | sort | grep "BUILDKITE_PLUGIN_METAHOOK" | uniq >"${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"
 
-run_hook_when_needed "$(basename "${BASH_SOURCE[0]}")"
+if grep -E 'BUILDKITE_PLUGIN_METAHOOK_.+(\.BAT|\.CMD)=' "${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"; then
+  echo "Sorry, we had to remove Windows Batch file support in 0.4.0."
+  echo "Please refer to https://github.com/improbable-eng/metahook-buildkite-plugin/tree/master/changelog.md#0.4.0"
+  echo ""
+  exit 1
+fi
+
+"${BASH_SOURCE%/*}/run-hook.sh" "$(basename "${BASH_SOURCE[0]}")"

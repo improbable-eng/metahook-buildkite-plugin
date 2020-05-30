@@ -1,9 +1,9 @@
-#!/usr/local/env bash
-source "$(dirname "${BASH_SOURCE[0]}")/../lib/stdlib.bash" || exit 67
+#!/usr/bin/env bash
+set -euo pipefail
 
 cleanup() {
   rm -rf "${BUILDKITE_METAHOOK_HOOKS_PATH}"
 }
 trap cleanup EXIT
 
-run_hook_when_needed "$(basename "${BASH_SOURCE[0]}")"
+"${BASH_SOURCE%/*}/run-hook.sh" "$(basename "${BASH_SOURCE[0]}")"
