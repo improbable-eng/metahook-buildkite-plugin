@@ -1,0 +1,4 @@
+#!/usr/local/env bash
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/stdlib.bash" || exit 67
+
+run_hook_when_needed "$(basename "${BASH_SOURCE[0]}")"

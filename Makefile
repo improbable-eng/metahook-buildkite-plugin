@@ -4,4 +4,4 @@ local_run: vendorize
 vendorize:
 	rm -rf .buildkite/plugins/metahook
 	mkdir -p .buildkite/plugins/metahook
-	cp -rf hooks plugin.yml .buildkite/plugins/metahook/
+	cp -rf hooks lib plugin.yml .buildkite/plugins/metahook/

@@ -24,3 +24,75 @@ post-command hook
 $ .buildkite/plugins/metahook/hooks/pre-exit
 pre-exit hook
 ```
+
+On Windows, the output should contain
+
+```txt
+>>> Starting local agent �
+>>> Starting build �
+>>> Executing initial command: buildkite-agent pipeline upload ".buildkite/local-pipeline.yml"
+>>> Executing command step Test
+
+~~~ Preparing plugins
+> cd C:\Users\Pete\src\improbable\metahook-buildkite-plugin
+
+~~~ Running plugin metahook environment hook
+> .buildkite\plugins\metahook\hooks\environment
+# BUILDKITE_METAHOOK_VARS changed
+# BUILDKITE_METAHOOK_HOOKS_PATH changed
+
+~~~ Running plugin metahook pre-command hook
+> .buildkite\plugins\metahook\hooks\pre-command
+BUILDKITE_PLUGIN_METAHOOK_PRE_COMMAND=echo "pre-command hook"
+Executing pre-command metahook saved to /tmp/tmp.16gn7V1NYx/pre-command ...
+pre-command hook
+with two commands
+
+~~~ Running plugin metahook command hook
+> .buildkite\plugins\metahook\hooks\command
+
+~~~ Running plugin metahook post-command hook
+> .buildkite\plugins\metahook\hooks\post-command
+BUILDKITE_PLUGIN_METAHOOK_POST_COMMAND=echo "post-command hook"
+Executing post-command metahook saved to /tmp/tmp.16gn7V1NYx/post-command ...
+post-command hook
+
+~~~ Running plugin metahook pre-exit hook
+> .buildkite\plugins\metahook\hooks\pre-exit
+BUILDKITE_PLUGIN_METAHOOK_PRE_EXIT=echo  "pre-exit hook"
+Executing pre-exit metahook saved to /tmp/tmp.16gn7V1NYx/pre-exit ...
+pre-exit hook
+
+>>> Command succeeded in 3.0925061s
+>>> Executing command step Like we did last summer
+
+~~~ Preparing plugins
+> cd C:\Users\Pete\src\improbable\metahook-buildkite-plugin
+
+~~~ Running plugin metahook environment hook
+> .buildkite\plugins\metahook\hooks\environment
+# BUILDKITE_METAHOOK_VARS changed
+# BUILDKITE_METAHOOK_HOOKS_PATH changed
+
+~~~ Running plugin metahook pre-command hook
+> .buildkite\plugins\metahook\hooks\pre-command
+BUILDKITE_PLUGIN_METAHOOK_PRE_COMMAND=echo "plague hook"
+Executing pre-command metahook saved to /tmp/tmp.nRdUtA2FGe/pre-command ...
+plague hook
+with two commands
+
+~~~ Running plugin metahook command hook
+> .buildkite\plugins\metahook\hooks\command
+
+~~~ Running plugin metahook post-command hook
+> .buildkite\plugins\metahook\hooks\post-command
+BUILDKITE_PLUGIN_METAHOOK_POST_COMMAND=echo "post-command summer hook"
+Executing post-command metahook saved to /tmp/tmp.nRdUtA2FGe/post-command ...
+post-command summer hook
+
+~~~ Running plugin metahook pre-exit hook
+> .buildkite\plugins\metahook\hooks\pre-exit
+BUILDKITE_PLUGIN_METAHOOK_PRE_EXIT=echo  "pre-exit summer hook"
+Executing pre-exit metahook saved to /tmp/tmp.nRdUtA2FGe/pre-exit ...
+pre-exit summer hook
+```
