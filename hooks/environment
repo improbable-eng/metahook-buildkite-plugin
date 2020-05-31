@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
-source "$(dirname "${BASH_SOURCE[0]}")/../lib/stdlib.bash" || exit 67
-
 BUILDKITE_METAHOOK_HOOKS_PATH="$(mktemp -d)"
 export BUILDKITE_METAHOOK_HOOKS_PATH
 BUILDKITE_METAHOOK_VARS="${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"
 export BUILDKITE_METAHOOK_VARS
 env | sort | grep "METAHOOK" | uniq >"${BUILDKITE_METAHOOK_VARS}"
 
-run_hook_when_needed "$(basename "${BASH_SOURCE[0]}")"
+
+"${BASH_SOURCE%/*}"/run-hook.sh "$(basename "${BASH_SOURCE[0]}")"

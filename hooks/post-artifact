@@ -1,4 +1,2 @@
-#!/usr/local/env bash
-source "$(dirname "${BASH_SOURCE[0]}")/../lib/stdlib.bash" || exit 67
-
-run_hook_when_needed "$(basename "${BASH_SOURCE[0]}")"
+#!/usr/bin/env bash
+"${BASH_SOURCE%/*}"/run-hook.sh "$(basename "${BASH_SOURCE[0]}")"
