@@ -2,11 +2,27 @@
 
 hook_name="${1:?1st arg needs to be hook name}"
 
-upperd="$(echo "${hook_name}" | tr "[:lower:]" "[:upper:]")"
-var_name="BUILDKITE_PLUGIN_METAHOOK_${upperd//-/_}"
-if grep -q "${var_name}" <"${BUILDKITE_METAHOOK_VARS}"; then
-  hook_file="${BUILDKITE_METAHOOK_HOOKS_PATH}/${hook_name}"
-  echo "${!var_name}" >"${hook_file}"
-  chmod +x "${hook_file}"
-  "${hook_file}"
-fi
+# The list of possible file extensions for hooks.
+declare -a extensions=(
+    ""
+    ".bat"
+    ".cmd"
+)
+
+for ext in "${extensions[@]}"; do
+  upperd="$(echo "${hook_name}${ext}" | tr "[:lower:]" "[:upper:]" | tr .- _)"
+  var_name="BUILDKITE_PLUGIN_METAHOOK_${upperd}"
+
+  if grep -q "${var_name}" <"${BUILDKITE_METAHOOK_VARS}"; then
+    cat ${BUILDKITE_METAHOOK_VARS}
+
+    hook_file="${BUILDKITE_METAHOOK_HOOKS_PATH}/${hook_name}${ext}"
+    echo "${!var_name}" >"${hook_file}"
+    chmod +x "${hook_file}"
+    if [[ ${ext} == "" ]]; then
+      "${hook_file}"
+    else
+      cmd.exe /c "${hook_file}" # .bat or .cmd
+    fi
+  fi
+done
