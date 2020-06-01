@@ -14,8 +14,6 @@ for ext in "${extensions[@]}"; do
   var_name="BUILDKITE_PLUGIN_METAHOOK_${upperd}"
 
   if grep -q "${var_name}" <"${BUILDKITE_METAHOOK_VARS}"; then
-    cat ${BUILDKITE_METAHOOK_VARS}
-
     hook_file="${BUILDKITE_METAHOOK_HOOKS_PATH}/${hook_name}${ext}"
     echo "${!var_name}" >"${hook_file}"
     chmod +x "${hook_file}"
