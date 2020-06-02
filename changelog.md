@@ -8,6 +8,12 @@
 
 ### Removed
 
+- **Breaking change** Removed support for `command` metahook.
+
+    Buildkite special-cases this which triggers edge-cases that a `command` metahook would need to work around.
+
+    If you want to override behaviour here, you will need to modify the automation you're running rather than inject a difference via metahook.
+
 - **Breaking change** Removed Windows Batch (`.bat`, `.cmd`) support.
 
     Sorry if this impacts you.
