@@ -1,46 +1,15 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-# The list of possible hooks to implement.
-declare -a hooks=(
-    # "environment" # not allowed
-    "pre-checkout"
-    "checkout"
-    "post-checkout"
-    "pre-command"
-    "command"
-    "post-command"
-    "pre-artifact"
-    "post-artifact"
-    "pre-exit"
-)
+BUILDKITE_METAHOOK_HOOKS_PATH="$(mktemp -d)"
+export BUILDKITE_METAHOOK_HOOKS_PATH
+env | sort | grep "BUILDKITE_PLUGIN_METAHOOK" | uniq >"${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"
 
-# The list of possible file extensions for hooks.
-declare -a extensions=(
-    ""
-    ".bat"
-    ".cmd"
-)
+if grep -E 'BUILDKITE_PLUGIN_METAHOOK_.+(\.BAT|\.CMD)=' "${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"; then
+  echo "Sorry, we had to remove Windows Batch file support in 0.4.0."
+  echo "Please refer to https://github.com/improbable-eng/metahook-buildkite-plugin/tree/master/changelog.md#0.4.0"
+  echo ""
+  exit 1
+fi
 
-hooks_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-vars="$(mktemp)"
-cleanup() {
-  rm -rf "${vars}"
-}
-trap cleanup EXIT
-
-env | sort | grep "METAHOOK" | uniq >"${vars}"
-
-for hook_name in "${hooks[@]}"; do
-  for ext in "${extensions[@]}"; do
-    hook_file="${hooks_dir}/${hook_name}${ext}"
-    rm -f "${hook_file}"
-    upperd="$(echo "${hook_name}${ext}" | tr "[:lower:]" "[:upper:]")"
-    var_name="BUILDKITE_PLUGIN_METAHOOK_${upperd//-/_}"
-    if grep "${var_name}" <"${vars}"; then
-      # Note: ! syntax here is dynamic variable expansion. That is
-      # use the var_name string's variable value.
-      echo "${!var_name}" >"${hook_file}"
-    fi
-  done
-done
+"${BASH_SOURCE%/*}/run-hook.sh" "$(basename "${BASH_SOURCE[0]}")"
