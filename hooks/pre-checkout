@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -euo pipefail
+"${BASH_SOURCE%/*}/run-hook.sh" "$(basename "${BASH_SOURCE[0]}")"
