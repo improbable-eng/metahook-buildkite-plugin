@@ -1,14 +1,14 @@
 # Changelog
 
-## 0.4.1
+## v0.4.1
 
-### 0.4.1 Removed
+### v0.4.1 Removed
 
 - Removed `checkout`, same reason as `command`.
 
-## 0.4.0
+## v0.4.0
 
-### 0.4.0 Fixed
+### v0.4.0 Fixed
 
 - Allow multiple steps to use metahooks for the same hook but with different content.
 - Inject `bash` shebang and Bash Strict Mode (`set -euo pipefail`) so that if metahooks fail with errors the job halts rather than continuing.
@@ -20,7 +20,7 @@
 
   You can override those choices by setting different values (e.g. `set +o nounset`) within your metahook.
 
-### 0.4.0 Removed
+### v0.4.0 Removed
 
 - **Breaking change** Removed support for `command` metahook.
 
