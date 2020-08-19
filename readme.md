@@ -7,7 +7,7 @@ A Buildkite plugin that allows running additional commands as buildkite hooks on
 ```yaml
 common: &common
   plugins:
-  - improbable-eng/metahook#v0.4.1:
+  - improbable-eng/metahook:
       post-checkout: scripts/setup.sh
       pre-exit: |
         scripts/cleanup.sh
