@@ -1,6 +1,4 @@
-set -euo pipefail
+#!/usr/bin/env bash
 
-hook_name="$(basename "${BASH_SOURCE[0]}")"
-printenv | grep BUILDKITE_PLUGIN
-
+hook_name=pre-command
 . "${BASH_SOURCE%/*}/run-hook.sh"

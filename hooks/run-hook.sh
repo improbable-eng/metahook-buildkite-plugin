@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
 hook_name="${hook_name:-$1:?1st arg needs to be hook name}"
 

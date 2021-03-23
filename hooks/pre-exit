@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
 cleanup() {
   rm -rf "${BUILDKITE_METAHOOK_HOOKS_PATH}"
 }
 trap cleanup EXIT
 
-"${BASH_SOURCE%/*}/run-hook.sh" "$(basename "${BASH_SOURCE[0]}")"
+hook_name=pre-exit
+. "${BASH_SOURCE%/*}/run-hook.sh"
