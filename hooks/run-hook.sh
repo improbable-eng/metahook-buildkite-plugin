@@ -1,7 +1,4 @@
-#!/usr/bin/env bash
 set -euo pipefail
-hook_name="${1:?1st arg needs to be hook name}"
-
 upperd="$(echo "${hook_name}" | tr "[:lower:]" "[:upper:]" | sed "s:-:_:")"
 var_name="BUILDKITE_PLUGIN_METAHOOK_${upperd}"
 
@@ -22,8 +19,8 @@ if grep -q "${var_name}" <"${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"; then
   for v in "${vars[@]}"; do
     # Exclamation syntax here is dynamic variable expansion.
     # That is, use the var_name string to look up the value.
-    echo "${!v}" >>"${hook_file}"
+    echo ". ${!v}" >>"${hook_file}"
   done
-  chmod +x "${hook_file}"
-  exec "${hook_file}"
+  echo "running hook_file=[[[$( cat "$hook_file" )]]]"
+  . "${hook_file}"
 fi
