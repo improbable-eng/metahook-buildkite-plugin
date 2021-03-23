@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-hook_name="${hook_name:-$1:?1st arg needs to be hook name}"
-
 upperd="$(echo "${hook_name}" | tr "[:lower:]" "[:upper:]" | sed "s:-:_:")"
 var_name="BUILDKITE_PLUGIN_METAHOOK_${upperd}"
 
