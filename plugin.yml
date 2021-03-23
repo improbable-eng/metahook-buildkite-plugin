@@ -1,3 +1,22 @@
 name: Metahook
 description: Run commands as buildkite hooks on a per-step basis
 author: https://github.com/ca-johnson
+configuration:
+  properties:
+    environment:
+      type: string
+    post-artifact:
+      type: string
+    post-checkout:
+      type: string
+    post-command:
+      type: string
+    pre-artifact:
+      type: string
+    pre-checkout:
+      type: string
+    pre-command:
+      type: string
+    pre-exit:
+      type: string
+  additionalProperties: false

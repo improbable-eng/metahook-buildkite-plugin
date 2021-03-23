@@ -10,6 +10,8 @@ echo "upperd=[${upperd}] var_name=[${var_name}]"
 if grep -q "${var_name}" <"${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"; then
   hook_file="${BUILDKITE_METAHOOK_HOOKS_PATH}/${hook_name}"
 
+  printenv | grep BUILDKITE_PLUGIN | grep METAHOOK
+
   echo "hook_file=[${hook_file}]"
   echo "#\!/usr/bin/env bash" >"${hook_file}"
   echo "set -o errexit" >>"${hook_file}"
