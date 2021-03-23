@@ -17,9 +17,13 @@ if grep -q "${var_name}" <"${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"; then
   echo "set -o errexit" >>"${hook_file}"
   echo "set -o nounset" >>"${hook_file}"
   echo "set -o pipefail" >>"${hook_file}"
-  # Exclamation syntax here is dynamic variable expansion.
-  # That is, use the var_name string to look up the value.
-  echo "${!var_name}" >>"${hook_file}"
+  # In the event of a list, these will be of the form <var_name>_<integer>
+  vars=( $(compgen -v "$var_name") )
+  for v in "${vars[@]}"; do
+    # Exclamation syntax here is dynamic variable expansion.
+    # That is, use the var_name string to look up the value.
+    echo "${!v}" >>"${hook_file}"
+  done
   chmod +x "${hook_file}"
   exec "${hook_file}"
 fi
