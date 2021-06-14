@@ -5,7 +5,9 @@ hook_name="${1:?1st arg needs to be hook name}"
 upperd="$(echo "${hook_name}" | tr "[:lower:]" "[:upper:]" | sed "s:-:_:")"
 var_name="BUILDKITE_PLUGIN_METAHOOK_${upperd}"
 
-if grep -q "${var_name}" <"${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"; then
+PLUGIN_CONFIG_HASH=$(cksum <<<"${BUILDKITE_PLUGIN_CONFIGURATION}" | awk '{ print $1 }')
+VARS_FILENAME="vars-${PLUGIN_CONFIG_HASH}"
+if grep -q "${var_name}" <"${BUILDKITE_METAHOOK_HOOKS_PATH}/${VARS_FILENAME}"; then
   hook_file="${BUILDKITE_METAHOOK_HOOKS_PATH}/${hook_name}"
 
   echo "#\!/usr/bin/env bash" >"${hook_file}"
