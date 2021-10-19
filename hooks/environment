@@ -3,7 +3,7 @@ set -euo pipefail
 
 BUILDKITE_METAHOOK_HOOKS_PATH="$(mktemp -d)"
 export BUILDKITE_METAHOOK_HOOKS_PATH
-env | sort /REC 65535 | grep "BUILDKITE_PLUGIN_METAHOOK" | uniq >"${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"
+env | sort --buffer-size=4M | grep "BUILDKITE_PLUGIN_METAHOOK" | uniq >"${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"
 
 if grep -E 'BUILDKITE_PLUGIN_METAHOOK_.+(\.BAT|\.CMD)=' "${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"; then
   echo "Sorry, we had to remove Windows Batch file support in 0.4.0."
