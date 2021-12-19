@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BUILDKITE_METAHOOK_HOOKS_PATH="$(mktemp -d)"
-export BUILDKITE_METAHOOK_HOOKS_PATH
-env | sort | grep "BUILDKITE_PLUGIN_METAHOOK" | uniq >"${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"
+# If users add multiple `metahook` instances, we'll just store our `vars` in the same directory.
+# We store the `vars` in a file that is namespaced by a hash of the plugin configuration, which
+# allows us to avoid having multiple metahook instances clobber eachother.
+if [[ ! -v "BUILDKITE_METAHOOK_HOOKS_PATH" ]]; then
+  export BUILDKITE_METAHOOK_HOOKS_PATH="$(mktemp -d)"
+fi
 
-if grep -E 'BUILDKITE_PLUGIN_METAHOOK_.+(\.BAT|\.CMD)=' "${BUILDKITE_METAHOOK_HOOKS_PATH}/vars"; then
+PLUGIN_CONFIG_HASH=$(cksum <<<"${BUILDKITE_PLUGIN_CONFIGURATION}" | awk '{ print $1 }')
+VARS_FILENAME="vars-${PLUGIN_CONFIG_HASH}"
+env | sort | grep "BUILDKITE_PLUGIN_METAHOOK" | uniq >"${BUILDKITE_METAHOOK_HOOKS_PATH}/${VARS_FILENAME}"
+
+if grep -E 'BUILDKITE_PLUGIN_METAHOOK_.+(\.BAT|\.CMD)=' "${BUILDKITE_METAHOOK_HOOKS_PATH}/${VARS_FILENAME}"; then
   echo "Sorry, we had to remove Windows Batch file support in 0.4.0."
   echo "Please refer to https://github.com/improbable-eng/metahook-buildkite-plugin/tree/master/changelog.md#0.4.0"
   echo ""

@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+PLUGIN_CONFIG_HASH=$(cksum <<<"${BUILDKITE_PLUGIN_CONFIGURATION}" | awk '{ print $1 }')
+VARS_FILENAME="vars-${PLUGIN_CONFIG_HASH}"
 cleanup() {
-  rm -rf "${BUILDKITE_METAHOOK_HOOKS_PATH}"
+  # Delete our `vars` directory, then if the directory itself is empty, delete that too
+  rm -rf "${BUILDKITE_METAHOOK_HOOKS_PATH}/${VARS_FILENAME}"
+  rmdir "${BUILDKITE_METAHOOK_HOOKS_PATH}" 2>/dev/null || true
 }
 trap cleanup EXIT
 
