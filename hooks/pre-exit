@@ -6,4 +6,4 @@ cleanup() {
 }
 trap cleanup EXIT
 
-"${BASH_SOURCE%/*}/run-hook.sh" "$(basename "${BASH_SOURCE[0]}")"
+"$(dirname "${BASH_SOURCE}")/run-hook.sh" "$(basename "${BASH_SOURCE[0]}")"
