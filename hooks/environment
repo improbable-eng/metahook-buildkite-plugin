@@ -12,4 +12,4 @@ if grep -E 'BUILDKITE_PLUGIN_METAHOOK_.+(\.BAT|\.CMD)=' "${BUILDKITE_METAHOOK_HO
   exit 1
 fi
 
-"${BASH_SOURCE%/*}/run-hook.sh" "$(basename "${BASH_SOURCE[0]}")"
+"$(dirname "${BASH_SOURCE[0]}")/run-hook.sh" "$(basename "${BASH_SOURCE[0]}")"
